@@ -1,6 +1,6 @@
 # XO Fusion Master - Tic Tac Toe Reimagined
 
-![XO Fusion Master Logo](https://png.pngtree.com/png-clipart/20211024/original/pngtree-robot-xo-concept-esport-logo-design-png-image_6863088.png)
+<img src="https://png.pngtree.com/png-clipart/20211024/original/pngtree-robot-xo-concept-esport-logo-design-png-image_6863088.png" width="50">
 
 Welcome to **XO Fusion Master**, a reimagined version of the classic Tic Tac Toe game. Our innovative take on this timeless classic brings you an extraordinary gaming experience.
 
