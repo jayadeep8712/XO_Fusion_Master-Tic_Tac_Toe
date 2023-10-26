@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon"
+        href="https://png.pngtree.com/png-clipart/20211024/original/pngtree-robot-xo-concept-esport-logo-design-png-image_6863088.png">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap">
+
+    <title>Tic Tac Toe - XO Fusion Master</title>
+    <style>
+        * {
+            -webkit-user-drag: none;
+        }
+
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7f7f7;
+
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+        }
+
+        header {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        header h1 {
+            font-size: 48px;
+        }
+
+        header p {
+            font-size: 20px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .game-section {
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .game-section h2 {
+            font-size: 36px;
+        }
+
+        .features-section {
+            margin-top: 40px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        .features-section h2 {
+            font-size: 36px;
+        }
+
+        .features-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .features-section li {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #007bff;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .icon {
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+
+        /* Light mode styles */
+        body.light-mode {
+            background-color: #f7f7f7;
+            color: #000;
+        }
+
+        .game-section.light-mode {
+            background-color: #fff;
+        }
+
+        .features-section.light-mode {
+            background-color: #fff;
+        }
+
+        .button.light-mode {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .toggle-button.light-mode {
+            background-color: #ccc;
+        }
+
+        .toggle-switch.light-mode {
+            background-color: #fff;
+        }
+
+
+        /* Dark mode styles */
+        body.night-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+
+        .game-section.night-mode {
+            background-color: #444;
+        }
+
+        .features-section.night-mode {
+            background-color: #444;
+        }
+
+
+        .button.night-mode {
+            background-color: #007bff;
+        }
+
+        .toggle-button.night-mode {
+            background-color: #555;
+        }
+
+        .toggle-switch.night-mode {
+            background-color: #ccc;
+        }
+
+
+        /* Game board styles */
+        .game-container {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;
+            margin: 20px auto;
+            width: 300px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #248effc0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        #reset-button {
+            font-size: 18px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #status {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+
+        /* Custom toggle button styles */
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .toggle-label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        .toggle-button {
+            width: 60px;
+            height: 30px;
+            position: relative;
+            background-color: #ccc;
+            border-radius: 15px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .toggle-switch {
+            width: 30px;
+            height: 30px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        }
+
+        .toggle-label[data-mode="dark"] .toggle-button {
+            background-color: #333;
+        }
+
+        .toggle-label[data-mode="dark"] .toggle-switch {
+            transform: translateX(30px);
+            background-color: #222;
+        }
+
+        .score-section {
+            margin-top: 40px;
+            background-color: #80808070;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .score-section h2 {
+            font-size: 36px;
+        }
+
+        .score {
+            font-size: 24px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1><img src="https://png.pngtree.com/png-clipart/20211024/original/pngtree-robot-xo-concept-esport-logo-design-png-image_6863088.png"
+                width="5%" alt="XO_LOGO" style="transform: translateY(10px);"> XO Fusion Master</h1>
+        <p>A Classic Game of Strategy and Fun</p>
+    </header>
+    <main>
+        <section class="game-section">
+            <h2>Play Tic Tac Toe</h2>
+            <div class="game-container">
+
+                <div class="cell" onclick="makeMove(0, 0)"></div>
+                <div class="cell" onclick="makeMove(0, 1)"></div>
+                <div class="cell" onclick="makeMove(0, 2)"></div>
+                <div class="cell" onclick="makeMove(1, 0)"></div>
+                <div class="cell" onclick="makeMove(1, 1)"></div>
+                <div class="cell" onclick="makeMove(1, 2)"></div>
+                <div class="cell" onclick="makeMove(2, 0)"></div>
+                <div class="cell" onclick="makeMove(2, 1)"></div>
+                <div class="cell" onclick="makeMove(2, 2)"></div>
+
+            </div>
+            <button id="reset-button" onclick="resetGame()">Reset Game</button>
+            <p id="status">Player X's turn</p>
+
+            <button class="button" onclick="startVsComputer()"><span class="icon">🤖</span> vs Computer</button>
+            <button class="button" id="vs-player-button" onclick="startVsPlayer()"><span class="icon">🧑‍🤝‍🧑</span> vs
+                Player</button>
+            <button class="button" id="night-mode-button" onclick="toggleMode()">Toggle Night Mode</button>
+            <div id="character-selection">
+                <h3>Choose Your Character</h3>
+                <button class="button" onclick="chooseCharacter('X')">X</button>
+                <button class="button" onclick="chooseCharacter('O')">O</button>
+            </div>
+
+        </section>
+
+        <!-------------------------------------Difficulty levels--------------------------------------->
+
+        <section>
+            <div id="difficulty-selection">
+                <h3>Choose Difficulty</h3>
+                <button class="button" onclick="chooseDifficulty('easy')">Easy</button>
+                <button class="button" onclick="chooseDifficulty('medium')">Medium</button>
+                <button class="button" onclick="chooseDifficulty('hard')">Hard</button>
+            </div>
+            <script>
+
+                let computerDifficulty = 'easy';
+
+                function startVsComputer() {
+                    isVsComputerMode = true;
+                    resetGame();
+                    currentPlayer = '';
+                    computerCharacter = '';
+                    playerCharacter = '';
+                    document.getElementById('status').textContent = "Game started. Choose your character and difficulty.";
+                    document.getElementById('character-selection').style.display = 'block';
+
+                    // Display difficulty level selection
+                    document.getElementById('difficulty-selection').style.display = 'block';
+                }
+
+                function chooseCharacter(character) {
+                    playerCharacter = character;
+                    computerCharacter = character === 'X' ? 'O' : 'X';
+                    document.getElementById('character-selection').style.display = 'none';
+                    document.getElementById('difficulty-selection').style.display = 'none';
+
+                    if (currentPlayer === computerCharacter && isVsComputerMode) {
+                        document.getElementById('status').textContent = "Computer is thinking...";
+                        setTimeout(computerMove, 1000); // Delay the computer's move for a better user experience
+                    } else {
+                        document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+                    }
+                }
+
+                function chooseDifficulty(difficulty) {
+                    computerDifficulty = difficulty;
+                    document.getElementById('difficulty-selection').style.display = 'none';
+                }
+
+                function computerMove() {
+                    if (computerDifficulty === 'easy') {
+                        makeRandomMove();
+                    } else if (computerDifficulty === 'medium') {
+                        if (!prioritizeWinningMove()) {
+                            prioritizeBlockingMove();
+                        }
+                    } else if (computerDifficulty === 'hard') {
+                        if (!prioritizeWinningMove()) {
+                            if (!prioritizeBlockingMove()) {
+                                prioritizeCenterOrCornersMove();
+                            }
+                        }
+                    }
+                }
+            </script>
+        </section>
+
+
+        <section class="features-section">
+            <h2>Features</h2>
+            <ul>
+                <li>Beautifully designed game board</li>
+                <li>Responsive gameplay on any device</li>
+                <li>Real-time status updates</li>
+                <li>Play against a friend or AI</li>
+            </ul>
+        </section>
+
+        <section class="score-section">
+            <h2>Scores</h2>
+            <div class="score" id="playerXScore">Player X: 0</div>
+            <div class="score" id="playerOScore">Player O: 0</div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2023 Jayadeep Pendela | OX Fusion Master | Strategy Meets Fun</p>
+    </footer>
+
+    <script>
+        let currentPlayer = 'X';
+        let board = ['', '', '', '', '', '', '', '', ''];
+        let gameOver = false;
+        let computerPlayer = 'O'; // Define the computer's symbol
+        let isNightMode = false;
+
+        let playerCharacter = '';
+        let computerCharacter = '';
+
+        let isVsComputerMode = false;
+
+        let playerXScore = 0;
+        let playerOScore = 0;
+
+        function makeMove(row, col) {
+            if (!gameOver && board[row * 3 + col] === '') {
+                board[row * 3 + col] = currentPlayer;
+                document.querySelector(`.cell:nth-child(${row * 3 + col + 1})`).textContent = currentPlayer;
+                checkWinner();
+
+                // Toggle between computer and player turns
+                currentPlayer = currentPlayer === playerCharacter ? computerCharacter : playerCharacter;
+
+                // Display status for the player vs. computer mode
+                if (!gameOver) {
+                    if (isVsComputerMode && currentPlayer === computerCharacter) {
+                        document.getElementById('status').textContent = "Computer is thinking...";
+                        setTimeout(computerMove, 1000); // Delay the computer's move for a better user experience
+                    } else {
+                        document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+                    }
+                }
+            }
+        }
+
+        function computerMove() {
+            // Implement your computer's move logic here
+            // Prioritize winning moves, then blocking the player, and finally making random moves
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            // Try to win
+            for (const combo of winningCombos) {
+                const [a, b, c] = combo;
+                if ((board[a] === computerCharacter && board[b] === computerCharacter && board[c] === '') ||
+                    (board[a] === computerCharacter && board[b] === '' && board[c] === computerCharacter) ||
+                    (board[a] === '' && board[b] === computerCharacter && board[c] === computerCharacter)) {
+                    if (board[c] === '') {
+                        makeMove(Math.floor(c / 3), c % 3);
+                        return;
+                    }
+                }
+            }
+
+            // Try to block the player from winning
+            for (const combo of winningCombos) {
+                const [a, b, c] = combo;
+                if ((board[a] === playerCharacter && board[b] === playerCharacter && board[c] === '') ||
+                    (board[a] === playerCharacter && board[b] === '' && board[c] === playerCharacter) ||
+                    (board[a] === '' && board[b] === playerCharacter && board[c] === playerCharacter)) {
+                    if (board[c] === '') {
+                        makeMove(Math.floor(c / 3), c % 3);
+                        return;
+                    }
+                }
+            }
+
+            // If no winning or blocking move is available, make a random move
+            let emptyCells = [];
+            for (let i = 0; i < board.length; i++) {
+                if (board[i] === '') {
+                    emptyCells.push(i);
+                }
+            }
+
+            if (emptyCells.length > 0) {
+                const randomIndex = Math.floor(Math.random() * emptyCells.length);
+                const computerMoveIndex = emptyCells[randomIndex];
+                const [row, col] = [Math.floor(computerMoveIndex / 3), computerMoveIndex % 3];
+
+                makeMove(row, col); // Make the computer's move
+            }
+        }
+
+        function checkWinner() {
+            const winningCombos = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+
+            for (const combo of winningCombos) {
+                const [a, b, c] = combo;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    const winner = board[a];
+                    document.getElementById('status').textContent = `Player ${winner} wins!`;
+                    gameOver = true;
+
+                    // Update the score
+                    if (winner === 'X') {
+                        playerXScore++;
+                    } else if (winner === 'O') {
+                        playerOScore++;
+                    }
+
+                    updateScore(); // Update the score display
+
+                    return;
+                }
+            }
+
+            if (!board.includes('')) {
+                document.getElementById('status').textContent = "It's a draw!";
+                gameOver = true;
+            }
+        }
+
+        function resetGame() {
+            currentPlayer = playerCharacter;
+            board = ['', '', '', '', '', '', '', '', ''];
+            gameOver = false;
+
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+
+            document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+            updateScore(); // Reset the score display
+        }
+
+        function toggleMode() {
+            isNightMode = !isNightMode;
+            const body = document.querySelector('body');
+            const header = document.querySelector('header');
+            const gameSection = document.querySelector('.game-section');
+            const featuresSection = document.querySelector('.features-section');
+            const footer = document.querySelector('footer');
+            const nightModeButton = document.getElementById('night-mode-button');
+
+            if (isNightMode) {
+                body.classList.add('night-mode');
+                header.classList.add('night-mode');
+                gameSection.classList.add('night-mode');
+                featuresSection.classList.add('night-mode');
+                footer.classList.add('night-mode');
+                nightModeButton.textContent = "Day Mode";
+            } else {
+                body.classList.remove('night-mode');
+                header.classList.remove('night-mode');
+                gameSection.classList.remove('night-mode');
+                featuresSection.classList.remove('night-mode');
+                footer.classList.remove('night-mode');
+                nightModeButton.textContent = "Night Mode";
+            }
+        }
+
+        function startVsComputer() {
+            isVsComputerMode = true;
+            resetGame();
+            currentPlayer = '';
+            computerCharacter = '';
+            playerCharacter = '';
+            document.getElementById('status').textContent = "Game started. Choose your character.";
+            document.getElementById('character-selection').style.display = 'block';
+        }
+
+        function startVsPlayer() {
+            isVsComputerMode = false;
+            resetGame();
+            currentPlayer = 'X';
+            board = ['', '', '', '', '', '', '', '', ''];
+            gameOver = false;
+            computerCharacter = '';
+            playerCharacter = '';
+            document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+            document.getElementById('character-selection').style.display = 'block';
+            document.getElementById('vs-computer-button').disabled = true;
+        }
+
+        function chooseCharacter(character) {
+            playerCharacter = character;
+            computerCharacter = character === 'X' ? 'O' : 'X';
+            document.getElementById('character-selection').style.display = 'none';
+            if (currentPlayer === computerCharacter && isVsComputerMode) {
+                document.getElementById('status').textContent = "Computer is thinking...";
+                setTimeout(computerMove, 1000); // Delay the computer's move for a better user experience
+            } else {
+                document.getElementById('status').textContent = `Player ${currentPlayer}'s turn`;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
